@@ -10,11 +10,11 @@ def save_to_excel(data_list, excel_path='output/invoices.xlsx'):
         else:
             wb = openpyxl.Workbook()
             ws = wb.active
-            ws.append(['STT', 'Ngày tháng năm', 'Mã số thuế', 'Số hóa đơn', 'Tên công ty', 'Tên hàng',
+            ws.append(['STT', 'Ngày tháng năm', 'Số hóa đơn', 'Tên công ty', 'Mã số thuế', 'Tên hàng',
                        'Đơn vị', 'Số lượng', 'Đơn giá', 'Thành tiền', '% Thuế', 'Tiền thuế', 'Tổng tiền', 'Phân loại'])
         for data in data_list:
             row = [
-                ws.max_row, data['date'], data['tax_code'], data['invoice_number'], data['company_name'],
+                ws.max_row, data['date'], data['invoice_number'], data['company_name'], data['tax_code'],
                 data['item_name'], data['unit'], data['quantity'], data['unit_price'], data['subtotal'],
                 data['tax_rate'] * 100, data['tax_amount'], data['total'], data['category']
             ]

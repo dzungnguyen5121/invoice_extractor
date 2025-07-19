@@ -1,8 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Invoice Data</title>
+    <title>Trích xuất hoá đơn</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .btn-extract-another {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-extract-another:hover {
+            background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+        
+        .btn-extract-another:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+        }
+        
+        .action-buttons {
+            margin-top: 30px;
+            padding: 20px 0;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+        }
+        
+        .btn-download {
+            margin-right: 15px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -21,9 +63,9 @@
                 <tr>
                     <th>STT</th>
                     <th>Ngày tháng năm</th>
-                    <th>Mã số thuế</th>
                     <th>Số hóa đơn</th>
                     <th>Tên công ty</th>
+                    <th>Mã số thuế</th>
                     <th>Tên hàng</th>
                     <th>Đơn vị</th>
                     <th>Số lượng</th>
@@ -40,9 +82,9 @@
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td>{{ item.date }}</td>
-                    <td>{{ item.tax_code }}</td>
                     <td>{{ item.invoice_number }}</td>
                     <td>{{ item.company_name }}</td>
+                    <td>{{ item.tax_code }}</td>
                     <td>{{ item.item_name }}</td>
                     <td>{{ item.unit }}</td>
                     <td>{{ item.quantity }}</td>
@@ -56,13 +98,19 @@
                 {% endfor %}
             </tbody>
         </table>
-        {% if data %}
-        <a href="/download" class="btn btn-primary">Download Excel</a>
-        {% endif %}
-        <!-- Thêm nút Trích xuất hóa đơn khác -->
-        <form action="/reset" method="get" style="margin-top: 20px;">
-            <button type="submit">Trích xuất hóa đơn khác</button>
-        </form>
+        
+        <div class="action-buttons">
+            {% if data %}
+            <a href="/download" class="btn btn-primary btn-download">
+                <i class="fas fa-download"></i> Download Excel
+            </a>
+            {% endif %}
+            
+            <a href="/reset" class="btn-extract-another">
+                <i class="fas fa-plus-circle"></i>
+                Trích xuất hóa đơn khác
+            </a>
+        </div>
     </div>
 </body>
 </html>

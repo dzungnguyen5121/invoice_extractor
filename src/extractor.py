@@ -118,15 +118,36 @@ def is_valid_company_name(line):
         return False
     if re.search(r'\d{10,}', line):
         return False
+    
+    # Loại trừ các từ khóa không phải tên công ty
     exclude_keywords = [
         'VAT', 'INVOICE', 'HÓA ĐƠN', 'TAX', 'SỐ', 'MST', 'CODE', 'ADDRESS', 'ĐỊA CHỈ',
-        'ACCOUNT', 'TÀI KHOẢN', 'PHONE', 'ĐIỆN THOẠI', 'CỬA HÀNG', 'CHI NHÁNH', 'PHÒNG',
+        'ACCOUNT', 'TÀI KHOẢN', 'PHONE', 'ĐIỆN THOẠI', 'PHÒNG',
         'PHIẾU', 'BILL', 'RECEIPT', 'BẢNG KÊ', 'BẢNG', 'PHỤ LỤC', 'KÝ HIỆU', 'MẪU SỐ',
         'SỐ HĐ', 'SỐ HÓA ĐƠN', 'SỐ:', 'NO:', '(VAT INVOICE)', '(INVOICE)', '(HÓA ĐƠN)',
         '(TAX INVOICE)', '(GTGT)', '(VAT)', '(TAX)', '(INVOICE)', '(RECEIPT)'
     ]
+    
+    # Kiểm tra từ khóa loại trừ (trừ 'CHI NHÁNH' và 'CỬA HÀNG' vì có thể là phần của tên công ty)
     if any(kw in line.upper() for kw in exclude_keywords):
         return False
+    
+    # Kiểm tra đặc biệt cho 'CHI NHÁNH' và 'CỬA HÀNG' - chỉ loại trừ khi đứng một mình
+    line_upper = line.upper()
+    if line_upper.strip() in ['CHI NHÁNH', 'CỬA HÀNG']:
+        return False
+    
+    # Loại trừ dòng chứa pattern ngày tháng
+    date_patterns = [
+        r'Ngày.*tháng.*năm',
+        r'ngày.*tháng.*năm',
+        r'Ngày.*month.*year',
+        r'ngày.*month.*year'
+    ]
+    for pattern in date_patterns:
+        if re.search(pattern, line, re.IGNORECASE):
+            return False
+    
     if re.match(r'^[\(\):\-]+', line) or re.match(r'[\(\):\-]+$', line):
         return False
     if len(line.split()) < 3:
@@ -196,7 +217,8 @@ def extract_data_from_pdf(pdf_path, config):
             if tax_code_match:
                 for g in tax_code_match.groups():
                     if g:
-                        tax_code = re.sub(r'[^0-9A-Za-z]', '', g.replace(' ', ''))
+                        # Chỉ loại bỏ khoảng trắng và giữ nguyên số 0 ở đầu
+                        tax_code = g.replace(' ', '').strip()
                         break
             # Trích xuất tên công ty
             company_name = ''
@@ -348,12 +370,21 @@ def extract_data_from_pdf(pdf_path, config):
                             row_data['subtotal'] = parse_number(row_data.get('subtotal', '0'))
                             if not row_data['subtotal']:
                                 row_data['subtotal'] = row_data['quantity'] * row_data['unit_price']
+                            # Làm tròn thành tiền tới chữ số hàng đơn vị
+                            row_data['subtotal'] = round(row_data['subtotal'])
+                            
                             tax_rate = row_data.get('tax_rate')
                             if tax_rate in (None, '', 0, 0.0):
                                 tax_rate = data.get('tax_rate', 0.0)
                             row_data['tax_rate'] = tax_rate
                             row_data['tax_amount'] = row_data['subtotal'] * tax_rate
+                            # Làm tròn tiền thuế tới chữ số hàng đơn vị
+                            row_data['tax_amount'] = round(row_data['tax_amount'])
+                            
                             row_data['total'] = row_data['subtotal'] + row_data['tax_amount']
+                            # Làm tròn tổng tiền tới chữ số hàng đơn vị
+                            row_data['total'] = round(row_data['total'])
+                            
                             row_data['category'] = ''
                             data_list.append(row_data)
                         except Exception as e:

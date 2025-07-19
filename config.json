@@ -1,6 +1,6 @@
 {
   "default": {
-    "tax_code": "Mã số thuế[\\w\\s\\(\\):]*((?:\\d[ ]*){10,13})|Tax Code[\\w\\s\\(\\):]*((?:\\d[ ]*){10,13})|MST[\\w\\s\\(\\):]*((?:\\d[ ]*){10,13})",
+    "tax_code": "Mã số thuế.*?([\\d\\-]{10,20})|Tax Code.*?([\\d\\-]{10,20})|MST.*?([\\d\\-]{10,20})",
     "invoice_number": "Số hóa đơn: (\\d+)|Invoice No: (\\d+)|Số HĐ: (\\d+)",
     "company_name": "^([A-ZÀ-Ỹ0-9\\-\\&\\.,\\s]{10,})$",
     "tax_rate": "(?:Thuế|Tax|Thuế suất GTGT): (\\d+) ?%",
