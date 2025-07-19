@@ -1,0 +1,65 @@
+{
+    "pdf": "HD_299_7-7.pdf",
+    "expected": [
+      {
+        "date": "07/07/2025",
+        "tax_code": "0105935836",
+        "invoice_number": "00000393",
+        "company_name": "CÔNG TY CỔ PHẦN XUẤT NHẬP KHẨU ĐẦU TƯ THƯƠNG MẠI 299",
+        "tax_rate": 0.08,
+        "item_name": "Vải địa kỹ thuật ART12",
+        "unit": "m2",
+        "quantity": 1200.0,
+        "unit_price": 7870.37,
+        "subtotal": 9444444.0,
+        "tax_amount": 755555.52,
+        "total": 10199999.52,
+        "category": ""
+      },
+      {
+        "date": "07/07/2025",
+        "tax_code": "0105935836",
+        "invoice_number": "00000393",
+        "company_name": "CÔNG TY CỔ PHẦN XUẤT NHẬP KHẨU ĐẦU TƯ THƯƠNG MẠI 299",
+        "tax_rate": 0.08,
+        "item_name": "Màng chống thấm HDPE-HSE 1.0",
+        "unit": "m2",
+        "quantity": 4440.0,
+        "unit_price": 37500.0,
+        "subtotal": 166500000.0,
+        "tax_amount": 13320000.0,
+        "total": 179820000.0,
+        "category": ""
+      },
+      {
+        "date": "07/07/2025",
+        "tax_code": "0105935836",
+        "invoice_number": "00000393",
+        "company_name": "CÔNG TY CỔ PHẦN XUẤT NHẬP KHẨU ĐẦU TƯ THƯƠNG MẠI 299",
+        "tax_rate": 0.08,
+        "item_name": "Màng chống thấm HDPE - HSE 0.75",
+        "unit": "m2",
+        "quantity": 2000.0,
+        "unit_price": 28888.889,
+        "subtotal": 57777778.0,
+        "tax_amount": 4622222.24,
+        "total": 62400000.24,
+        "category": ""
+      },
+      {
+        "date": "07/07/2025",
+        "tax_code": "0105935836",
+        "invoice_number": "00000393",
+        "company_name": "CÔNG TY CỔ PHẦN XUẤT NHẬP KHẨU ĐẦU TƯ THƯƠNG MẠI 299",
+        "tax_rate": 0.08,
+        "item_name": "Màng chống thấm HDPE-HSE 0.5",
+        "unit": "m2",
+        "quantity": 2400.0,
+        "unit_price": 19074.074,
+        "subtotal": 45777778.0,
+        "tax_amount": 3662222.24,
+        "total": 49440000.24,
+        "category": ""
+      }
+    ]
+  }

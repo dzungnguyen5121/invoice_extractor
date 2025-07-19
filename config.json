@@ -1,0 +1,18 @@
+{
+  "default": {
+    "tax_code": "Mã số thuế[\\w\\s\\(\\):]*((?:\\d[ ]*){10,13})|Tax Code[\\w\\s\\(\\):]*((?:\\d[ ]*){10,13})|MST[\\w\\s\\(\\):]*((?:\\d[ ]*){10,13})",
+    "invoice_number": "Số hóa đơn: (\\d+)|Invoice No: (\\d+)|Số HĐ: (\\d+)",
+    "company_name": "^([A-ZÀ-Ỹ0-9\\-\\&\\.,\\s]{10,})$",
+    "tax_rate": "(?:Thuế|Tax|Thuế suất GTGT): (\\d+) ?%",
+    "table_columns": {
+      "item_name": ["Tên hàng hóa", "Tên hàng hóa, dịch vụ", "Description"],
+      "unit": ["Đơn vị tính", "Unit", "m2"],
+      "quantity": ["Số lượng", "Quantity"],
+      "unit_price": ["Đơn giá", "Unit Price"],
+      "subtotal": ["Thành tiền", "Amount"],
+      "tax_rate": ["% Thuế", "Tax", "Thuế suất GTGT", "%", "Thuế GTGT (VAT)", "VAT", "Thuế", "GTGT"],
+      "tax_amount": ["Tiền thuế", "Tax Amount", "Tiền thuế GTGT"],
+      "total": ["Tổng tiền", "Total", "Tổng tiền thanh toán", "Tổng cộng tiền thanh toán"]
+    }
+  }
+}

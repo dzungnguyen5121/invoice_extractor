@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">TRÍCH XUẤT THÔNG TIN HOÁ ĐƠN</h1>
+        {% if errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Ngày tháng năm</th>
+                    <th>Mã số thuế</th>
+                    <th>Số hóa đơn</th>
+                    <th>Tên công ty</th>
+                    <th>Tên hàng</th>
+                    <th>Đơn vị</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                    <th>% Thuế</th>
+                    <th>Tiền thuế</th>
+                    <th>Tổng tiền</th>
+                    <th>Phân loại</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.tax_code }}</td>
+                    <td>{{ item.invoice_number }}</td>
+                    <td>{{ item.company_name }}</td>
+                    <td>{{ item.item_name }}</td>
+                    <td>{{ item.unit }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.unit_price }}</td>
+                    <td>{{ item.subtotal }}</td>
+                    <td>{{ item.tax_rate * 100 }}%</td>
+                    <td>{{ item.tax_amount }}</td>
+                    <td>{{ item.total }}</td>
+                    <td>{{ item.category }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if data %}
+        <a href="/download" class="btn btn-primary">Download Excel</a>
+        {% endif %}
+        <!-- Thêm nút Trích xuất hóa đơn khác -->
+        <form action="/reset" method="get" style="margin-top: 20px;">
+            <button type="submit">Trích xuất hóa đơn khác</button>
+        </form>
+    </div>
+</body>
+</html>
