@@ -68,8 +68,8 @@
             <thead class="thead-sticky">
                 <tr class="table-header-simple">
                     <th>STT</th>
-                    <th>Ngày tháng năm</th>
                     <th>Số hóa đơn</th>
+                    <th>Ngày tháng năm</th>
                     <th>Tên công ty</th>
                     <th>Mã số thuế</th>
                     <th>Tên hàng</th>
@@ -87,8 +87,8 @@
                 {% for item in data %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>{{ item.date }}</td>
                     <td>{{ item.invoice_number }}</td>
+                    <td>{{ item.date }}</td>
                     <td>{{ item.company_name }}</td>
                     <td>{{ item.tax_code }}</td>
                     <td>{{ item.item_name }}</td>
@@ -135,7 +135,7 @@
                     // Chỉ lấy từng dòng dữ liệu (bỏ header)
                     const rows = table.querySelectorAll('tbody tr');
                     rows.forEach(row => {
-                        const cells = Array.from(row.querySelectorAll('td')).map(td => td.innerText.trim());
+                        const cells = Array.from(row.querySelectorAll('td')).slice(1).map(td => td.innerText.trim());
                         text += cells.join('\t') + '\n';
                     });
                     // Copy vào clipboard
