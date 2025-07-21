@@ -156,6 +156,28 @@ def is_valid_company_name(line):
         return False
     return True
 
+def extract_tax_code_near_company(lines, company_name, config):
+    pattern = config.get('tax_code', '')
+    # Tìm vị trí dòng tên công ty
+    company_idx = None
+    for idx, line in enumerate(lines):
+        if company_name.strip() and company_name.strip() in line.strip():
+            company_idx = idx
+            break
+    if company_idx is not None:
+        # Kiểm tra 1-3 dòng sau tên công ty
+        for offset in range(1, 4):
+            if company_idx + offset < len(lines):
+                line = lines[company_idx + offset]
+                for m in re.finditer(pattern, line, re.IGNORECASE):
+                    code = next((g for g in m.groups() if g), None)
+                    if code:
+                        # Luôn loại bỏ ký tự không phải số
+                        code_clean = ''.join(c for c in code if c.isdigit())
+                        if len(code_clean) >= 10:
+                            return code_clean
+    return ''
+
 # Hàm trích xuất dữ liệu từ PDF
 def extract_data_from_pdf(pdf_path, config):
     data_list = []
@@ -211,15 +233,6 @@ def extract_data_from_pdf(pdf_path, config):
                         if m:
                             invoice_number_val = m.group(1)
                             break
-            # Trích xuất mã số thuế
-            tax_code_match = re.search(default_config.get('tax_code', ''), text)
-            tax_code = ''
-            if tax_code_match:
-                for g in tax_code_match.groups():
-                    if g:
-                        # Chỉ loại bỏ khoảng trắng và giữ nguyên số 0 ở đầu
-                        tax_code = g.replace(' ', '').strip()
-                        break
             # Trích xuất tên công ty
             company_name = ''
             tax_line_idx = next((i for i, l in enumerate(lines) if 'Mã số thuế' in l or 'Tax Code' in l or 'MST' in l), None)
@@ -243,6 +256,21 @@ def extract_data_from_pdf(pdf_path, config):
                     company_name = prev_line
                     if ':' in company_name:
                         company_name = company_name.split(':', 1)[1].strip()
+            # Trích xuất mã số thuế (ưu tiên tìm gần tên công ty)
+            tax_code = extract_tax_code_near_company(lines, company_name, default_config)
+            if not tax_code:
+                # fallback: dùng logic cũ nếu không tìm thấy
+                tax_code = ''
+                for idx, line in enumerate(lines):
+                    for m in re.finditer(default_config.get('tax_code', ''), line, re.IGNORECASE):
+                        code = next((g for g in m.groups() if g), None)
+                        if code:
+                            code_clean = ''.join(c for c in code if c.isdigit())
+                            if len(code_clean) >= 10:
+                                tax_code = code_clean
+                                break
+                    if tax_code:
+                        break
             # Trích xuất thuế suất
             tax_rate_val = 0.0
             tax_rate_aliases = [normalize_fuzzy(a) for a in default_config.get('tax_rate', [])]
