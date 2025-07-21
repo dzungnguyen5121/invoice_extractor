@@ -172,9 +172,10 @@ def extract_tax_code_near_company(lines, company_name, config):
                 for m in re.finditer(pattern, line, re.IGNORECASE):
                     code = next((g for g in m.groups() if g), None)
                     if code:
-                        # Luôn loại bỏ ký tự không phải số
-                        code_clean = ''.join(c for c in code if c.isdigit())
-                        if len(code_clean) >= 10:
+                        # Luôn loại bỏ ký tự không phải số hoặc dấu gạch ngang, giữ lại dấu '-'
+                        code_clean = ''.join(c for c in code if c.isdigit() or c == '-')
+                        code_clean = code_clean.replace(' ', '').replace('--', '-').strip('-')
+                        if len(code_clean.replace('-', '')) >= 10:
                             return code_clean
     return ''
 
@@ -265,8 +266,9 @@ def extract_data_from_pdf(pdf_path, config):
                     for m in re.finditer(default_config.get('tax_code', ''), line, re.IGNORECASE):
                         code = next((g for g in m.groups() if g), None)
                         if code:
-                            code_clean = ''.join(c for c in code if c.isdigit())
-                            if len(code_clean) >= 10:
+                            code_clean = ''.join(c for c in code if c.isdigit() or c == '-')
+                            code_clean = code_clean.replace(' ', '').replace('--', '-').strip('-')
+                            if len(code_clean.replace('-', '')) >= 10:
                                 tax_code = code_clean
                                 break
                     if tax_code:
